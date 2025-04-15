@@ -13,7 +13,9 @@ async function main(): Promise<void> {
 };
 
 await startProxyServer(proxyPort);
-app.listen(process.env.PORT || 8000);
+app.listen(process.env.PORT || 8000, () => {
+  console.log(`Listening on port ${process.env.PORT}`);
+});
 //await main();
 //console.log('finished');
 //process.exit(0);
