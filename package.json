@@ -1,0 +1,16 @@
+{
+  "name": "extractorhorarioscuenca",
+  "module": "src/index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@types/puppeteer": "^7.0.4",
+    "proxy-chain": "^2.5.8",
+    "puppeteer": "^24.6.1"
+  }
+}
