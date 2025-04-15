@@ -13,7 +13,7 @@ async function main(): Promise<void> {
 };
 
 await startProxyServer(proxyPort);
-app.listen(8000);
+app.listen(process.env.PORT || 8000);
 //await main();
 //console.log('finished');
 //process.exit(0);
