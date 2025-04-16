@@ -1,6 +1,6 @@
 import pupeteer, { ElementHandle } from 'puppeteer';
 import { spawn } from 'child_process';
-export const proxyPort= 8001;
+export const proxyPort = 8001;
 
 export type Dia = 'Lunes' | 'Martes' | 'Miercoles' | 'Jueves' | 'Viernes' | 'Sabado';
 export interface Horario {
@@ -102,41 +102,41 @@ export async function getHorarios(user: string, password: string): Promise<Horar
     throw Error('no se encontraron filas');
   }
 
-  
+
   const tablaDatos = Array<{ materia: string, horario: string, aula: string }>();
-  
+
   // Process all rows in parallel and wait for completion
   const rowPromises = filas.map(async (fila) => {
     const columnas = await fila.$$('td');
-    
+
     const getTextContent = async (element: ElementHandle): Promise<string> => (await element.getProperty('textContent')).toString().split('JSHandle:')[1];
-    
+
     const materia = await getTextContent(columnas[0]);
     const horario = await getTextContent(columnas[1]);
     const aula = await getTextContent(columnas[2]);
-    
-    
+
+
     return {
       aula: aula,
       horario: horario,
       materia: materia,
     };
   });
-  
+
   // Wait for all promises to resolve and collect the results
   const results = await Promise.all(rowPromises);
   tablaDatos.push(...results);
-  
+
   browser.close();
 
   const horariosMaterias: HorariosMateria[] = [];
-  
+
   tablaDatos.forEach((element) => {
     const horarios: Horario[] = [];
-    
+
     const horarioSeparados = element.horario.split('\n ').filter((ele) => ele.length !== 0);
     const aulasSeparadas = element.aula.split(', ');
-    
+
     if (horarioSeparados.length !== aulasSeparadas.length) {
       throw Error('horariosSeparados y aulasSeparadas do not have the same length');
     }
@@ -150,31 +150,31 @@ export async function getHorarios(user: string, password: string): Promise<Horar
           .substring(0, 1)
           .toUpperCase()
           + diaRaw
-          .toLowerCase()
-          .substring(1));
-          if (['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'].includes(diaFormated)) {
-            return diaFormated as Dia;
-          } else {
-            throw Error('El dia no es valido: ' + diaFormated);
-          }
-        })();
-        
-        horarios.push(
-          {
-            aula: aula,
-            dia: dia,
-            horario: horario,
-          }
-        )
-      }
-      
-      horariosMaterias.push(
+            .toLowerCase()
+            .substring(1));
+        if (['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'].includes(diaFormated)) {
+          return diaFormated as Dia;
+        } else {
+          throw Error('El dia no es valido: ' + diaFormated);
+        }
+      })();
+
+      horarios.push(
         {
-          nombre: element.materia.split(' - ')[0], // tomar solo el nombre y no la comision
-          horarios: horarios
+          aula: aula,
+          dia: dia,
+          horario: horario,
         }
       )
-    })
-    
+    }
+
+    horariosMaterias.push(
+      {
+        nombre: element.materia.split(' - ')[0], // tomar solo el nombre y no la comision
+        horarios: horarios
+      }
+    )
+  })
+
   return horariosMaterias;
 }

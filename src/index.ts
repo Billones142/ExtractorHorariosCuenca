@@ -3,7 +3,7 @@ import { app } from './server';
 import { getHorarios, proxyPort, startProxyServer } from './browser';
 
 async function main(): Promise<void> {
-  const horariosMaterias= await getHorarios(process.env.USER ?? '', process.env.PASSWORD ?? '');
+  const horariosMaterias = await getHorarios(process.env.USER ?? '', process.env.PASSWORD ?? '');
 
   //console.log('datos:\n', JSON.stringify(tablaDatos, null, '  '));
   console.log('datos:\n', JSON.stringify(horariosMaterias, null, '  '));
