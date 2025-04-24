@@ -12,9 +12,11 @@ async function main(): Promise<void> {
   Bun.write(json, JSON.stringify(horariosMaterias, null, '  '));
 };
 
+const port = process.env.PORT ?? 8000;
+
 await startProxyServer(proxyPort);
-app.listen(process.env.PORT || 8000, () => {
-  console.log(`Listening on port ${process.env.PORT}`);
+app.listen(port, () => {
+  console.log(`Listening on port ${port}`);
 });
 //await main();
 //console.log('finished');
