@@ -6,7 +6,11 @@ export const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/', async (req: Request, res: Response) => {
+app.get('/', (req: Request, res: Response) => {
+  res.status(200).send('ok');
+});
+
+app.get('/json', async (req: Request, res: Response) => {
   try {
     const user = req.query.user;
     const password = req.query.password;
@@ -16,7 +20,9 @@ app.get('/', async (req: Request, res: Response) => {
     res.status(200).json(horarios);
   } catch (err) {
     console.error(err);
-    res.status(500).send('error');
+    if (err instanceof Error) {
+      res.status(500).send(`error: ${err.message}`);
+    }
   }
 
-})
+});
