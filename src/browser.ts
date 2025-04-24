@@ -64,6 +64,7 @@ export async function startProxyServer(port: number): Promise<void> {
 export async function getHorarios(user: string, password: string): Promise<HorariosMateria[]> {
   const proxyUrl = `http://localhost:${proxyPort}`;
   const browser = await pupeteer.launch({
+    executablePath: '/opt/render/.cache/puppeteer/chrome/linux-135.0.7049.84/chrome-linux64/chrome',
     browser: 'chrome',
     headless: false,
     args: [`--proxy-server=${proxyUrl}`],
