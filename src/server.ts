@@ -24,5 +24,4 @@ app.get('/json', async (req: Request, res: Response) => {
       res.status(500).send(`error: ${err.message}`);
     }
   }
-
 });
